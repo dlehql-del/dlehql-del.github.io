@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#14152b">
-<title>한 판 주먹왕</title>
-<meta name="description" content="콤보·커맨드 기술·잡기·초필살기까지! 1~3분이면 끝나는 격투 웹게임. 몇 연승까지 갈 수 있을까?">
+<title>Fighting Fist King</title>
+<meta name="description" content="Combos, command specials, throws and supers! A 1-3 minute fighting web game. How long can your win streak go?">
 <!--
   ==================== [광고 설정 ①] ====================
   구글 애드센스 승인을 받으면, 애드센스가 주는 아래 형태의 코드 한 줄을
@@ -127,25 +127,25 @@ kbd{display:inline-block;min-width:20px;padding:0 5px;margin:0 1px;border:1px so
        애드센스가 준 <ins class="adsbygoogle" ...></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
        코드를 이 div 안에 붙여넣으세요. (권장: 반응형 또는 320×50 / 728×90)
        ※ 게임 버튼과 멀리 떨어진 상단에 둬서 '실수 클릭'(정책 위반)을 피했습니다. -->
-  <div id="ad-top" class="ad-slot"><span class="ad-label">광고 영역 · 320×50 / 728×90</span></div>
+  <div id="ad-top" class="ad-slot"><span class="ad-label">Advertisement · 320×50 / 728×90</span></div>
 
   <div id="stage">
     <div id="cwrap">
       <canvas id="game"></canvas>
-      <div id="tools"><button id="btnPause" aria-label="일시정지">⏸</button><button id="btnMute" aria-label="소리">🔊</button></div>
+      <div id="tools"><button id="btnPause" aria-label="Pause">⏸</button><button id="btnMute" aria-label="Sound">🔊</button></div>
     </div>
-    <div id="rotateHint">📱 가로로 돌리면 더 크게 보여요</div>
+    <div id="rotateHint">📱 Rotate to landscape for a bigger view</div>
   </div>
 
   <div id="controls">
     <div id="joy"><div id="knob"></div></div>
     <div class="acts">
-      <button class="btn b-p" data-k="lp">약P</button>
-      <button class="btn b-p" data-k="hp">강P</button>
-      <button class="btn b-sp" data-k="sp">기술</button>
-      <button class="btn b-k" data-k="lk">약K</button>
-      <button class="btn b-k" data-k="hk">강K</button>
-      <button class="btn b-su" data-k="su" id="btnSu">초필</button>
+      <button class="btn b-p" data-k="lp">LP</button>
+      <button class="btn b-p" data-k="hp">HP</button>
+      <button class="btn b-sp" data-k="sp">SP</button>
+      <button class="btn b-k" data-k="lk">LK</button>
+      <button class="btn b-k" data-k="hk">HK</button>
+      <button class="btn b-su" data-k="su" id="btnSu">SUPER</button>
     </div>
   </div>
 </div>
@@ -153,18 +153,18 @@ kbd{display:inline-block;min-width:20px;padding:0 5px;margin:0 1px;border:1px so
 <!-- 메뉴 -->
 <div id="menu" class="overlay show">
   <div class="card">
-    <div class="logo">한 판<b>주먹왕</b></div>
-    <p class="sub">콤보 · 필살기 · 잡기 · 초필살기 · 몇 연승까지?</p>
+    <div class="logo">FIGHTING<b>FIST KING</b></div>
+    <p class="sub">Combos · Specials · Throws · Supers · How far can you go?</p>
     <div class="best" id="menuBest"></div>
-    <button class="big" id="btnStart">시작하기</button>
+    <button class="big" id="btnStart">START</button>
     <div class="row2">
-      <button class="ghost" id="btnTrain">🥊 연습 모드</button>
-      <button class="ghost" id="btnMoves1">📜 기술표</button>
+      <button class="ghost" id="btnTrain">🥊 Training</button>
+      <button class="ghost" id="btnMoves1">📜 Move List</button>
     </div>
     <div class="howto">
-      <span class="kb"><kbd>←↑↓→</kbd> 이동 · <kbd>Z</kbd>약P <kbd>X</kbd>강P <kbd>C</kbd>약K <kbd>V</kbd>강K<br><kbd>A</kbd> 쉬운 기술 · <kbd>S</kbd> 초필살 · <kbd>Esc</kbd> 일시정지<br></span>
-      <span class="tc">왼쪽 스틱으로 이동, 오른쪽 버튼으로 공격!<br></span>
-      뒤로 당기면 <b>막기</b> · 3판 2선승 · 이길수록 강해지는 상대
+      <span class="kb"><kbd>←↑↓→</kbd> Move · <kbd>Z</kbd>LP <kbd>X</kbd>LK <kbd>C</kbd>HP <kbd>V</kbd>HK<br><kbd>A</kbd> Easy Special · <kbd>S</kbd> Super · <kbd>Esc</kbd> Pause<br></span>
+      <span class="tc">Left stick to move, right buttons to attack!<br></span>
+      Hold back to <b>block</b> · Best of 3 · Opponents get tougher as you win
     </div>
   </div>
 </div>
@@ -172,66 +172,66 @@ kbd{display:inline-block;min-width:20px;padding:0 5px;margin:0 1px;border:1px so
 <!-- 기술표 -->
 <div id="moves" class="overlay">
   <div class="card moves">
-    <div class="res-title" style="font-size:28px;text-align:center">📜 기술표</div>
-    <p class="note" style="text-align:center;margin-top:4px">방향은 캐릭터가 <b>오른쪽을 볼 때</b> 기준이에요. (→ = 앞)</p>
+    <div class="res-title" style="font-size:28px;text-align:center">📜 Move List</div>
+    <p class="note" style="text-align:center;margin-top:4px">Directions assume your character is <b>facing right</b>. (→ = forward)</p>
 
-    <h3>기본</h3>
-    <div class="mv"><b>막기</b><span><span class="cmd">←</span> 서서 막기 · <span class="cmd">↙</span> 앉아 막기</span></div>
-    <div class="mv"><b>중단·하단·상단</b><span>점프 공격은 서서, 앉아 약K·강K는 앉아서 막아야 해요</span></div>
-    <div class="mv"><b>대시 / 백스텝</b><span><span class="cmd">→→</span> / <span class="cmd">←←</span></span></div>
-    <div class="mv"><b>잡기</b><span>붙어서 <span class="cmd">→</span> 또는 <span class="cmd">←</span> + 강P (막기로 못 막음)</span></div>
-    <div class="mv"><b>잡기 풀기</b><span>잡히는 순간 아무 공격 버튼</span></div>
+    <h3>Basics</h3>
+    <div class="mv"><b>Block</b><span><span class="cmd">←</span> Stand block · <span class="cmd">↙</span> Crouch block</span></div>
+    <div class="mv"><b>High / Low</b><span>Block jump attacks standing, and crouching LK/HK crouching</span></div>
+    <div class="mv"><b>Run / Backstep</b><span><span class="cmd">→→</span> (hold → to keep running) / <span class="cmd">←←</span> big leap back</span></div>
+    <div class="mv"><b>Throw</b><span>Up close, <span class="cmd">→</span> or <span class="cmd">←</span> + HP (can't be blocked)</span></div>
+    <div class="mv"><b>Throw Escape</b><span>Press any attack button the moment you're grabbed</span></div>
 
-    <h3>필살기</h3>
-    <div class="mv"><b>기공탄</b><span><span class="cmd">↓↘→ + P</span><br>약P 느린 탄 · 강P 빠른 탄</span></div>
-    <div class="mv"><b>승천각</b><span><span class="cmd">→↓↘ + P</span><br>대공기 · 시작할 때 무적</span></div>
-    <div class="mv"><b>돌진각</b><span><span class="cmd">↓↙← + K</span><br>날아차기 연타</span></div>
+    <h3>Special Moves</h3>
+    <div class="mv"><b>Ki Blast</b><span><span class="cmd">↓↘→ + P</span><br>LP slow shot · HP fast shot</span></div>
+    <div class="mv"><b>Rising Fist</b><span><span class="cmd">→↓↘ + P</span><br>Anti-air · Invincible on startup</span></div>
+    <div class="mv"><b>Rush Kick</b><span><span class="cmd">↓↙← + K</span><br>Flying multi-kick</span></div>
 
-    <h3>초필살기 (파워 1칸)</h3>
-    <div class="mv"><b>폭풍연타</b><span><span class="cmd">↓↘→↓↘→ + P</span><br>맞으면 10연타!</span></div>
-    <p class="note">파워 게이지는 때리거나 맞으면 차요. 최대 3칸까지 모아둘 수 있어요.</p>
+    <h3>Super Move (1 power bar)</h3>
+    <div class="mv"><b>Final Fury</b><span><span class="cmd">↓↘→↓↘→ + P</span><br>10 hits if it lands!</span></div>
+    <p class="note">The power gauge fills when you hit or get hit. You can store up to 3 bars.</p>
 
-    <h3>쉬운 조작 (모바일 추천)</h3>
-    <div class="mv"><b>[기술]</b><span>기공탄 · <span class="cmd">→</span>+[기술] 돌진각 · <span class="cmd">↓</span>+[기술] 승천각</span></div>
-    <div class="mv"><b>[초필]</b><span>폭풍연타 (키보드 <kbd>A</kbd>=기술 <kbd>S</kbd>=초필)</span></div>
+    <h3>Easy Controls (great on mobile)</h3>
+    <div class="mv"><b>[SP]</b><span>Ki Blast · <span class="cmd">→</span>+[SP] Rush Kick · <span class="cmd">↓</span>+[SP] Rising Fist</span></div>
+    <div class="mv"><b>[SUPER]</b><span>Final Fury (keyboard <kbd>A</kbd>=SP <kbd>S</kbd>=SUPER)</span></div>
 
-    <h3>콤보 예시</h3>
-    <div class="mv"><b>입문</b><span>앉아약K → 앉아약K → 돌진각</span></div>
-    <div class="mv"><b>기본</b><span>약P → 약P → 강P → 승천각</span></div>
-    <div class="mv"><b>하단</b><span>앉아약K → 앉아약K → 강K</span></div>
-    <div class="mv"><b>점프 진입</b><span>점프강K → 강P → 승천각</span></div>
-    <div class="mv"><b>한 방</b><span>강P → 초필살 폭풍연타</span></div>
-    <p class="note">💡 약공격이 맞으면 약공격·강공격으로 바로 이어져요(연타). 공격이 <b>맞거나 막히는 순간</b> 필살기를 입력하면 동작이 끊기고 바로 나가요(캔슬). 필살기는 초필살로 캔슬돼요.</p>
+    <h3>Sample Combos</h3>
+    <div class="mv"><b>Starter</b><span>cr.LK → cr.LK → Rush Kick</span></div>
+    <div class="mv"><b>Basic</b><span>LP → LP → HP → Rising Fist</span></div>
+    <div class="mv"><b>Low</b><span>cr.LK → cr.LK → HK</span></div>
+    <div class="mv"><b>Jump-in</b><span>j.HK → HP → Rising Fist</span></div>
+    <div class="mv"><b>Big Damage</b><span>HP → Super Final Fury</span></div>
+    <p class="note">💡 Light attacks chain into light or heavy attacks on hit. Input a special <b>the moment an attack hits or is blocked</b> to cancel straight into it. Specials can be canceled into the super.</p>
 
-    <button class="big" id="btnMovesClose" style="margin-top:16px">닫기</button>
+    <button class="big" id="btnMovesClose" style="margin-top:16px">CLOSE</button>
   </div>
 </div>
 
 <!-- 결과 -->
 <div id="result" class="overlay">
   <div class="card">
-    <div class="res-title" id="resTitle">승리!</div>
+    <div class="res-title" id="resTitle">YOU WIN!</div>
     <div class="res-sub" id="resSub"></div>
-    <div class="newrec" id="resNew">🏆 신기록!</div>
+    <div class="newrec" id="resNew">🏆 NEW RECORD!</div>
     <div class="stats" id="resStats"></div>
-    <button class="big" id="btnAgain">다시 하기</button>
-    <button class="ghost" id="btnMenu">메뉴로</button>
+    <button class="big" id="btnAgain">PLAY AGAIN</button>
+    <button class="ghost" id="btnMenu">MENU</button>
     <!-- ==================== [광고 자리 2] 결과 화면 ====================
          한 판 끝날 때마다 보이는 자리라 노출이 가장 많습니다.
          span 을 지우고 애드센스 광고 단위 코드(300×250 권장)를 붙여넣으세요.
          버튼 아래로 간격을 둬서 실수 클릭을 막았습니다. -->
-    <div class="ad-slot ad-result"><span class="ad-label">광고 영역 · 300×250</span></div>
+    <div class="ad-slot ad-result"><span class="ad-label">Advertisement · 300×250</span></div>
   </div>
 </div>
 
 <!-- 일시정지 -->
 <div id="pause" class="overlay">
   <div class="card">
-    <div class="res-title" style="font-size:32px">일시정지</div>
-    <p class="sub" style="margin-bottom:18px">숨 좀 돌리고 오세요</p>
-    <button class="big" id="btnResume">계속하기</button>
-    <button class="ghost" id="btnMoves2">📜 기술표</button>
-    <button class="ghost" id="btnQuit">그만하기</button>
+    <div class="res-title" style="font-size:32px">PAUSED</div>
+    <p class="sub" style="margin-bottom:18px">Take a breather</p>
+    <button class="big" id="btnResume">RESUME</button>
+    <button class="ghost" id="btnMoves2">📜 Move List</button>
+    <button class="ghost" id="btnQuit">QUIT</button>
   </div>
 </div>
 
@@ -263,26 +263,26 @@ const MV = {
   jHP:  { cls:'J', post:'j',  s:5, a:6, r:6,  dmg:10, hs:20, bs:13, kb:4, box:[6,90,-104,-28], guard:'high' },
   jLK:  { cls:'J', post:'j',  s:4, a:8, r:4,  dmg:6,  hs:17, bs:10, kb:3, box:[6,82,-66,-6], guard:'high' },
   jHK:  { cls:'J', post:'j',  s:6, a:6, r:6,  dmg:11, hs:20, bs:13, kb:4, box:[8,100,-72,-2], guard:'high' },
-  fbL:  { cls:'S', post:'st', s:12, a:2, r:24, dmg:8,  hs:18, bs:12, kb:4, guard:'mid', proj:6,  name:'기공탄' },
-  fbH:  { cls:'S', post:'st', s:13, a:2, r:26, dmg:9,  hs:18, bs:12, kb:4, guard:'mid', proj:10, name:'기공탄' },
-  dpL:  { cls:'S', post:'st', s:3, a:12, r:4, dmg:12, hs:30, bs:18, kb:4, box:[0,64,-210,-40], guard:'mid', inv:9,  rise:-12,   rvx:2, land:14, kd:true, cancel:'su', name:'승천각' },
-  dpH:  { cls:'S', post:'st', s:3, a:14, r:4, dmg:15, hs:30, bs:18, kb:4, box:[0,66,-220,-40], guard:'mid', inv:11, rise:-14.5, rvx:3, land:18, kd:true, cancel:'su', name:'승천각' },
-  rushL:{ cls:'S', post:'st', s:8, a:18, r:18, dmg:4, hits:3, gap:6, hs:18, bs:12, kb:2, box:[10,98,-128,-52], guard:'mid', mvx:8,  kd:'last', cancel:'su', name:'돌진각' },
-  rushH:{ cls:'S', post:'st', s:9, a:24, r:20, dmg:4, hits:4, gap:6, hs:18, bs:12, kb:2, box:[10,98,-128,-52], guard:'mid', mvx:10, kd:'last', cancel:'su', name:'돌진각' },
-  super:{ cls:'U', post:'st', s:6, a:26, r:26, dmg:3, hs:40, bs:22, kb:0, box:[8,90,-152,-40], guard:'mid', mvx:11, inv:32, cost:100, isSuper:true, name:'폭풍연타' },
+  fbL:  { cls:'S', post:'st', s:12, a:2, r:32, dmg:7,  hs:18, bs:9, kb:4, guard:'mid', proj:4.5, name:'Ki Blast' },
+  fbH:  { cls:'S', post:'st', s:14, a:2, r:36, dmg:8,  hs:18, bs:9, kb:4, guard:'mid', proj:6.5, name:'Ki Blast' },
+  dpL:  { cls:'S', post:'st', s:3, a:12, r:4, dmg:12, hs:30, bs:18, kb:4, box:[0,64,-210,-40], guard:'mid', inv:9,  rise:-12,   rvx:2, land:14, kd:true, cancel:'su', name:'Rising Fist' },
+  dpH:  { cls:'S', post:'st', s:3, a:14, r:4, dmg:15, hs:30, bs:18, kb:4, box:[0,66,-220,-40], guard:'mid', inv:11, rise:-14.5, rvx:3, land:18, kd:true, cancel:'su', name:'Rising Fist' },
+  rushL:{ cls:'S', post:'st', s:8, a:18, r:18, dmg:4, hits:3, gap:6, hs:18, bs:12, kb:2, box:[10,98,-128,-52], guard:'mid', mvx:8,  kd:'last', cancel:'su', name:'Rush Kick' },
+  rushH:{ cls:'S', post:'st', s:9, a:24, r:20, dmg:4, hits:4, gap:6, hs:18, bs:12, kb:2, box:[10,98,-128,-52], guard:'mid', mvx:10, kd:'last', cancel:'su', name:'Rush Kick' },
+  super:{ cls:'U', post:'st', s:6, a:26, r:26, dmg:3, hs:40, bs:22, kb:0, box:[8,90,-152,-40], guard:'mid', mvx:11, inv:32, cost:100, isSuper:true, name:'Final Fury' },
 };
 for (const k in MV) MV[k].id = k;
 
-const PLAYER = { name: '나', c: '#3fa9ff', c2: '#173b6b', band: '#ff3b5c', style: 'bal' };
+const PLAYER = { name: 'YOU', c: '#3fa9ff', c2: '#173b6b', band: '#ff3b5c', style: 'bal' };
 const ROSTER = [
-  { name: '곰돌 사범', c: '#e0533d', c2: '#5a1e17', band: '#ffd23f', style: 'grab' },
-  { name: '번개 소녀', c: '#38c172', c2: '#14532d', band: '#ffffff', style: 'rush' },
-  { name: '그림자',   c: '#7c5cff', c2: '#2a1d66', band: '#ff4fa0', style: 'bal' },
-  { name: '강철 주먹', c: '#9aa5b1', c2: '#2d3748', band: '#ff8a00', style: 'zone' },
-  { name: '불꽃 대장', c: '#ff8a00', c2: '#7a2e00', band: '#ffe066', style: 'rush' },
-  { name: '흑룡',     c: '#30343f', c2: '#0b0d10', band: '#e63946', style: 'bal' },
+  { name: 'Master Bear', c: '#e0533d', c2: '#5a1e17', band: '#ffd23f', style: 'grab' },
+  { name: 'Volt Girl', c: '#38c172', c2: '#14532d', band: '#ffffff', style: 'rush' },
+  { name: 'Shade',     c: '#7c5cff', c2: '#2a1d66', band: '#ff4fa0', style: 'bal' },
+  { name: 'Steel Knuckle', c: '#9aa5b1', c2: '#2d3748', band: '#ff8a00', style: 'zone' },
+  { name: 'Blaze Boss', c: '#ff8a00', c2: '#7a2e00', band: '#ffe066', style: 'rush' },
+  { name: 'Black Dragon', c: '#30343f', c2: '#0b0d10', band: '#e63946', style: 'bal' },
 ];
-const DUMMY = { name: '연습 상대', c: '#c9b38a', c2: '#5b4a2e', band: '#ffffff', style: 'bal' };
+const DUMMY = { name: 'Dummy', c: '#c9b38a', c2: '#5b4a2e', band: '#ffffff', style: 'bal' };
 const STYLES = {
   bal:  { zone: .3,  rush: .35, grab: .15 },
   zone: { zone: .6,  rush: .15, grab: .1 },
@@ -382,8 +382,8 @@ function releaseAll() {
 }
 const KEYMAP = {
   ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down',
-  KeyZ: 'lp', KeyX: 'hp', KeyC: 'lk', KeyV: 'hk', KeyA: 'sp', KeyS: 'su',
-  KeyU: 'lp', KeyI: 'hp', KeyJ: 'lk', KeyK: 'hk', KeyO: 'sp', KeyL: 'su',
+  KeyZ: 'lp', KeyX: 'lk', KeyC: 'hp', KeyV: 'hk', KeyA: 'sp', KeyS: 'su',
+  KeyU: 'lp', KeyI: 'lk', KeyJ: 'hp', KeyK: 'hk', KeyO: 'sp', KeyL: 'su',
 };
 window.addEventListener('keydown', e => {
   unlockAudio();
@@ -513,7 +513,7 @@ class Fighter {
       x, y: GROUND, vx: 0, vy: 0, hp: 100, dispHp: 100, state: 'idle', stT: 0, t: 0, facing,
       move: null, moveName: '', atkT: 0, atkId: 0, contact: false, hitCount: 0, lastHitT: -99, stun: 0,
       inv: 0, crouching: false, airUsed: false, juggle: 0, combo: 0, comboDmg: 0, flash: 0, victory: false,
-      intent: idleIntent(), guardDir: 5, superLock: null, throwBack: false, throwId: 0, landT: 0, preJx: 0,
+      intent: idleIntent(), guardDir: 5, superLock: null, kickF: -99, push: 0, throwBack: false, throwId: 0, landT: 0, preJx: 0,
       lastStart: '', lastStartF: -1,
       ai: { t: 40, queue: [], qT: 0, qStarted: false, guardT: 0, guardLow: false, seenAtk: 0, seenProj: 0,
             aaJump: -1, airAtk: null, jumpIn: false, walkT: 0, walkDir: 5, techRoll: -1, tech: false, fbCD: 0 },
@@ -525,11 +525,14 @@ class Fighter {
     if (this.inv > 0 || ['down', 'wakeup', 'ko', 'thrown', 'throwing'].includes(this.state)) return null;
     if (this.state === 'airhit' && this.juggle >= 4) return null;
     const cr = this.crouching && this.onGround;
-    return { x0: this.x - 24, x1: this.x + 24, y0: this.y - (cr ? 100 : 150), y1: this.y };
+    // 점프 중엔 다리를 접으므로 발 쪽 판정을 줄임 → 기공탄을 넘기 쉬움
+    const tuck = !this.onGround && (this.state === 'jump' || (this.state === 'attack' && this.move && this.move.post === 'j')) ? 26 : 0;
+    return { x0: this.x - 24, x1: this.x + 24, y0: this.y - (cr ? 100 : 150), y1: this.y - tuck };
   }
   phys(fr) {
     const wasAir = this.y < GROUND || this.vy < 0;
     this.vy += GRAV; this.x += this.vx; this.y += this.vy;
+    if (this.push) { this.x += this.push; this.push *= 0.8; if (Math.abs(this.push) < 0.15) this.push = 0; } // 구석 밀어내기
     if (this.y >= GROUND) { this.y = GROUND; this.vy = 0; this.vx *= fr; }
     this.x = clamp(this.x, 40, W - 40);
     return wasAir && this.y >= GROUND;
@@ -605,12 +608,12 @@ class Fighter {
       case 'land': this.phys(0.7); if (this.stT >= this.landT) this.setState('idle'); return;
       case 'prejump':
         this.phys(0.7);
-        if (this.stT >= 3) { this.vy = -15.5; this.vx = this.preJx * this.facing * 4.8; this.setState('jump'); this.airUsed = false; this.jumpId++; }
+        if (this.stT >= 3) { this.vy = -15.5; this.vx = this.preJx * this.facing * (this.runJ && this.preJx > 0 ? 7.5 : 4.8); this.setState('jump'); this.airUsed = false; this.jumpId++; }
         return;
-      case 'backstep':
-        if (this.stT === 1) this.vy = -4;
-        this.vx = -this.facing * 6.5 * Math.max(0, 1 - this.stT / 18);
-        this.phys(0.6); if (this.stT >= 18) this.setState('idle'); return;
+      case 'backstep': // 뒤로 크게 뛰어 거리 벌리기 (약 170px)
+        if (this.stT === 1) this.vy = -5.5;
+        this.vx = -this.facing * 13 * Math.max(0, 1 - this.stT / 24);
+        this.phys(0.6); if (this.stT >= 24) this.setState('idle'); return;
       case 'attack': this.updAttack(I, o); return;
     }
     // ----- 자유 상태 -----
@@ -622,16 +625,19 @@ class Fighter {
       return;
     }
     const d = I.dir;
-    if (this.state === 'dash') {
-      if (d === 4 || d === 1 || this.stT >= 16) { this.setState('idle'); }
-      else { this.vx = this.facing * (9.5 - this.stT * 0.3); this.phys(0.8); return; }
+    // 달리기: →→ 후 → 를 누르고 있는 동안 계속 달림 (최소 8프레임)
+    const running = this.state === 'dash';
+    if (running && (d === 6 || (this.stT < 8 && d === 5))) {
+      this.vx = this.facing * Math.min(8.5, 6.5 + this.stT * 0.2); this.phys(1); return;
     }
-    if (I.dash === 'dash') { this.setState('dash'); this.crouching = false; this.phys(1); return; }
-    if (I.dash === 'backstep') { this.setState('backstep'); this.inv = 8; this.crouching = false; this.phys(1); return; }
+    if (I.dash === 'dash') { this.setState('dash'); this.crouching = false; this.vx = this.facing * 6.5; this.phys(1); return; }
+    if (I.dash === 'backstep') { this.setState('backstep'); this.inv = 10; this.crouching = false; this.phys(1); return; }
+    this.runJ = running;
     if (d >= 7) { this.setState('prejump'); this.preJx = d === 7 ? -1 : d === 9 ? 1 : 0; this.crouching = false; this.phys(0.7); return; }
     if (d <= 3) { this.crouching = true; if (this.state !== 'crouch') this.setState('crouch'); this.vx = 0; this.phys(0.7); return; }
     this.crouching = false;
     if (d === 6) { this.vx = this.facing * this.speed; if (this.state !== 'walk') this.setState('walk'); }
+    else if (d === 4 && incomingProj(this)) { this.vx = 0; const idle = 'idle'; if (this.state !== idle) this.setState(idle); } // 기공탄이 날아오면 뒤로 걷지 않고 제자리 막기
     else if (d === 4) { this.vx = -this.facing * this.speed * 0.72; if (this.state !== 'walk') this.setState('walk'); }
     else { const idle = this.victory ? 'win' : 'idle'; if (this.state !== idle) this.setState(idle); }
     this.phys(d === 5 ? 0.7 : 1);
@@ -643,7 +649,7 @@ class Fighter {
     if (this.contact && m.cancel && this.tryCands(I, o, true)) { this.phys(0.7); return; }
     const t = this.atkT;
     if (m.proj && t === m.s) {
-      projs.push({ id: ++uid, owner: this, m, x: this.x + this.facing * 62, y: this.y - 112, vx: this.facing * m.proj, life: 220, t: 0 });
+      projs.push({ id: ++uid, owner: this, m, x: this.x + this.facing * 62, y: this.y - 92, vx: this.facing * m.proj, life: 220, t: 0 });
       sfx('fb');
     }
     if (m.rise && t === m.s) { this.vy = m.rise; this.vx = this.facing * m.rvx; }
@@ -662,7 +668,7 @@ class Fighter {
     if (t <= 7 && o.intent && o.intent.tech && t > 1) {          // 잡기 풀기
       this.setState('idle'); o.setState('idle');
       this.vx = -f * 7; o.vx = f * 7; o.facing = -f;
-      addText((this.x + o.x) / 2, this.y - 175, '잡기 풀기!', '#8fd3ff', 26); sfx('block');
+      addText((this.x + o.x) / 2, this.y - 175, 'ESCAPE!', '#8fd3ff', 26); sfx('block');
       spark((this.x + o.x) / 2, this.y - 110, '#8fd3ff', 10);
       return;
     }
@@ -677,7 +683,7 @@ class Fighter {
       spark(o.x, o.y - 60, '#ffffff', 14); G.shake = 10; G.hitstop = 6; sfx('heavy');
       this.combo = 1; this.comboDmg = 0;
       dealDamage(this, o, Math.round(13 * this.dmgMul));
-      if (this === P) addText(o.x, o.y - 170, '잡기!', '#ffd23f', 28);
+      if (this === P) addText(o.x, o.y - 170, 'THROW!', '#ffd23f', 28);
     }
     this.phys(0.7);
     if (t >= 30) this.setState('idle');
@@ -692,17 +698,29 @@ class Fighter {
       spark(o.x - this.facing * 10, o.y - 90 - Math.random() * 40, '#ffffff', 6);
       sfx('hit'); G.shake = 5; G.hitstop = 1; this.combo++;
       registerHit(this, Math.round(3 * this.dmgMul));
-      dealDamage(this, o, Math.round(3 * this.dmgMul));
+      dealDamage(this, o, Math.min(Math.round(3 * this.dmgMul), Math.max(0, o.hp - 1))); // 마무리 전엔 KO 안 됨
       if (o.state !== 'hit') { this.superLock = null; this.atkT = this.move.s + this.move.a; }
       return;
     }
-    if (L.n >= 9 && L.t >= 52) {
-      const dmg = Math.round(12 * this.dmgMul);
-      o.setState('airhit'); o.vy = -12; o.vx = this.facing * 7; o.juggle = 4; o.flash = 6;
-      spark(o.x, o.y - 100, '#ffd23f', 34); G.shake = 18; G.hitstop = 12; sfx('special');
-      this.combo++; registerHit(this, dmg);
-      dealDamage(this, o, dmg);
-      this.superLock = null; this.atkT = this.move.s + this.move.a;
+    if (L.n >= 9) {
+      // 마무리: 몸을 웅크렸다가(46~55) 뛰어오르며 올려차기(56~), 60프레임에 명중
+      o.stun = Math.max(o.stun, 12);
+      if (L.t === 56) {
+        this.kickF = this.t; this.vy = -8.5; this.vx = this.facing * 2.5; sfx('heavy');
+        spark(this.x, GROUND - 6, '#ffffff', 12);
+        return;
+      }
+      if (L.t > 56) this.vx = this.facing * 2.5;
+      if (L.t >= 64) { // 회축이 한 바퀴 돌아 앞으로 오는 순간 명중
+        const dmg = Math.round(12 * this.dmgMul);
+        spark(o.x - this.facing * 10, o.y - 150, '#ffd23f', 44); spark(o.x, o.y - 150, '#ffffff', 18);
+        G.shake = 24; G.hitstop = 14; sfx('special');
+        this.combo++; registerHit(this, dmg);
+        dealDamage(this, o, dmg);
+        if (o.state !== 'airhit') o.setState('airhit');
+        o.vy = -15; o.vx = this.facing * 6; o.juggle = Math.max(o.juggle, 4); o.flash = 8;
+        this.superLock = null; this.atkT = this.move.s + this.move.a;
+      }
     }
   }
 }
@@ -711,7 +729,7 @@ const projs = [], parts = [], texts = [];
 
 /* ===================== 게임 상태 ===================== */
 const G = {
-  mode: 'arcade', state: 'menu', stage: 1, streak: 0, runScore: 0, startBest: { ...best },
+  mode: 'arcade', state: 'menu', stage: 1, streak: 0, runScore: 0, dispScore: 0, startBest: { ...best },
   round: 1, pw: 0, cw: 0, clock: ROUND_SEC * 60, timer: 0, frame: 0,
   hitstop: 0, freeze: 0, freezeBy: null, shake: 0, slow: 0, banner: null, paused: false, lastWon: false,
   comboUI: null, theme: THEMES[0], city: [],
@@ -797,7 +815,7 @@ function aiIntent(c, p) {
       else if (r < 0.93) I.dash = 'backstep';
       else { ai.walkT = 10; ai.walkDir = 4; }
     }
-    if (ai.queue.length && ai.queue[0].startsWith('fb')) ai.fbCD = G.frame + 70 + (Math.random() * 90 | 0);
+    if (ai.queue.length && ai.queue[0].startsWith('fb')) ai.fbCD = G.frame + 120 + (Math.random() * 120 | 0);
   }
   if (ai.walkT > 0) { ai.walkT--; I.dir = ai.walkDir; if (ai.walkDir === 6 && dist < 80) ai.walkT = 0; }
   return I;
@@ -863,9 +881,11 @@ function attackHits(a, d) {
 function resolveHit(a, d, m, info) {
   const f = info.f;
   const atWall = d.x <= 42 || d.x >= W - 42;
+  const nearWall = d.x <= 70 || d.x >= W - 70;
   if (canGuard(d, m.guard)) {
-    d.setState('blockstun'); d.stun = m.bs; d.vx = f * m.kb * 1.2;
-    if (atWall && info.melee) a.vx = -f * m.kb;
+    d.setState('blockstun'); d.stun = m.bs; d.vx = info.melee ? f * m.kb * 1.2 : 0; // 기공탄은 막아도 밀려나지 않음
+    // 구석에서 막히면 공격자가 대신 밀려남 (약공격일수록 크게: 연타로 구석에 가두기 방지)
+    if (nearWall && info.melee) a.push = -f * (m.cls === 'L' ? 7.5 : 5);
     const chip = (m.cls === 'S' || m.cls === 'U') ? Math.max(1, Math.round(m.dmg * 0.25)) : 0;
     if (chip && d.hp > chip) d.hp -= chip;
     a.contact = true; a.power = Math.min(300, a.power + 2); d.power = Math.min(300, d.power + 3);
@@ -884,7 +904,7 @@ function resolveHit(a, d, m, info) {
     a.superLock = { t: 0, n: 0 }; a.vx = 0;
     d.setState('hit'); d.stun = 999; d.crouching = false; d.y = GROUND; d.vy = 0;
     spark(info.x, info.y, '#ffd23f', 16); sfx('heavy'); G.hitstop = 6;
-    registerHit(a, dmg); dealDamage(a, d, dmg);
+    registerHit(a, dmg); dealDamage(a, d, Math.min(dmg, Math.max(0, d.hp - 1))); // 초필 도중엔 KO 보류 → 마무리 발차기에서 KO
     return;
   }
   const air = !d.onGround || d.state === 'airhit';
@@ -949,7 +969,7 @@ function startRound() {
   P.reset(480 - 170, 1); C.reset(480 + 170, -1);
   projs.length = 0; parts.length = 0; texts.length = 0; G.comboUI = null;
   G.state = 'intro'; G.timer = 110; G.clock = ROUND_SEC * 60;
-  if (G.mode === 'training') { G.timer = 60; G.banner = mkBanner('연습 모드', '마음껏 때려보세요', 60, '#9fd8ff'); return; }
+  if (G.mode === 'training') { G.timer = 60; G.banner = mkBanner('TRAINING', 'Hit as much as you like', 60, '#9fd8ff'); return; }
   const last = G.round >= WINS_NEEDED * 2 - 1;
   G.banner = mkBanner(last ? 'FINAL ROUND' : 'ROUND ' + G.round, null, 70, '#ffd23f');
 }
@@ -965,7 +985,7 @@ function startMatch() {
 }
 function newRun() {
   unlockAudio(); G.mode = 'arcade';
-  G.stage = 1; G.streak = 0; G.runScore = 0; G.startBest = { ...best };
+  G.stage = 1; G.streak = 0; G.runScore = 0; G.dispScore = 0; G.startBest = { ...best };
   startMatch();
 }
 function startTraining() {
@@ -980,7 +1000,7 @@ function endRound(kind, winner) {
   const pWin = winner === P;
   winner.victory = true;
   if (pWin) G.pw++; else G.cw++;
-  let sub = pWin ? '라운드 승리!' : '라운드 패배';
+  let sub = pWin ? 'Round won!' : 'Round lost';
   if (pWin) {
     G.runScore += Math.ceil(G.clock / 60) * 10 + Math.round(P.hp) * 5;
     if (P.hp >= 100) { G.runScore += 1000; sub = 'PERFECT! +1000'; }
@@ -1005,7 +1025,7 @@ function showMenu() {
   P.reset(330, 1); C.reset(630, -1); C.def = ROSTER[0]; projs.length = 0; G.comboUI = null;
   G.theme = THEMES[0]; buildCity(1);
   $('menuBest').textContent = best.streak > 0 || best.score > 0
-    ? `🏆 최고 ${best.streak}연승 · ${best.score.toLocaleString()}점` : '가볍게 한 판, 시작해볼까요?';
+    ? `🏆 Best: ${best.streak}-win streak · ${best.score.toLocaleString()} pts` : 'Ready for a quick match?';
   $('menu').classList.add('show');
 }
 let movesFrom = 'menu';
@@ -1014,23 +1034,23 @@ function closeMoves() { $('moves').classList.remove('show'); $(movesFrom).classL
 function showResult(won, newRec, beaten) {
   hideAll();
   const t = $('resTitle');
-  t.textContent = won ? '승리!' : '패배…'; t.className = 'res-title ' + (won ? 'win' : 'lose');
+  t.textContent = won ? 'YOU WIN!' : 'YOU LOSE…'; t.className = 'res-title ' + (won ? 'win' : 'lose');
   let sub;
-  if (won) sub = `<b>${beaten}</b> 격파! 지금 <b style="color:var(--accent)">${G.streak}연승</b> 중<br>다음 상대는 더 강해요`;
+  if (won) sub = `<b>${beaten}</b> defeated! You're on a <b style="color:var(--accent)">${G.streak}-win streak</b><br>The next opponent is tougher`;
   else {
     const gap = G.startBest.streak - G.streak;
-    sub = G.streak > 0 ? `${G.streak}연승에서 멈췄어요.` : '아깝다!';
-    sub += gap > 0 ? `<br>최고 기록까지 <b style="color:var(--accent)">${gap}승</b> 남았었어요. 한 판만 더?` : '<br>한 판만 더? 💡 연습 모드에서 콤보를 익혀보세요';
+    sub = G.streak > 0 ? `Your streak ended at ${G.streak}.` : 'So close!';
+    sub += gap > 0 ? `<br>You were <b style="color:var(--accent)">${gap} win${gap > 1 ? 's' : ''}</b> away from your best. One more?` : '<br>One more? 💡 Practice combos in Training mode';
   }
   $('resSub').innerHTML = sub;
   $('resNew').classList.toggle('show', newRec);
   $('resStats').innerHTML =
-    `<div class="row"><span>이번 점수</span><b>${G.runScore.toLocaleString()}</b></div>` +
-    `<div class="row"><span>연승</span><b>${G.streak}</b></div>` +
-    `<div class="row"><span>최고 기록</span><b>${best.streak}연승 · ${best.score.toLocaleString()}점</b></div>`;
+    `<div class="row"><span>Score</span><b>${G.runScore.toLocaleString()}</b></div>` +
+    `<div class="row"><span>Win Streak</span><b>${G.streak}</b></div>` +
+    `<div class="row"><span>Best</span><b>${best.streak} wins · ${best.score.toLocaleString()} pts</b></div>`;
   const again = $('btnAgain');
-  again.textContent = won ? '다음 상대 ▶' : '다시 하기';
-  $('btnMenu').textContent = won ? '여기서 그만하기' : '메뉴로';
+  again.textContent = won ? 'NEXT OPPONENT ▶' : 'PLAY AGAIN';
+  $('btnMenu').textContent = won ? 'STOP HERE' : 'MENU';
   again.disabled = true; setTimeout(() => { again.disabled = false; }, 700);
   $('result').classList.add('show');
 }
@@ -1138,6 +1158,9 @@ function prog(f) {
   if (t < m.s + m.a) return 1;
   return Math.max(0, 1 - (t - m.s - m.a) / Math.max(1, m.r));
 }
+function incomingProj(f) {
+  return projs.some(q => q.owner !== f && !q.dead && Math.sign(q.vx) === Math.sign(f.x - q.x) && Math.abs(q.x - f.x) < 700);
+}
 function threatened(f) {
   const o = f === P ? C : P;
   if (o.state === 'attack' && Math.abs(o.x - f.x) < 220) return true;
@@ -1220,13 +1243,32 @@ function getPose(f) {
             p.fa = [sh, [10, -104], [-6, -96]]; lean = -18; dy = -26; liftAll = true;
           } else dy = 6;
           break;
-        case 'super':
-          if (f.superLock || act) {
+        case 'super': {
+          const L = f.superLock, kt = f.t - f.kickF;
+          if (kt >= 0 && kt < 34) {
+            // 마무리 회축(뛰어 돌려차기): 다리가 몸 뒤에서 머리 높이로 수평 원을 그리며 앞으로 휘감아 옴
+            const s = Math.min(1, Math.max(0, (kt - 1) / 7));          // 0 = 뒤, 1 = 앞 (kt 8에 명중)
+            const ph = Math.PI * (1 - s), c = Math.cos(ph), sn = Math.sin(ph);
+            const fy = -128 + (kt > 20 ? (kt - 20) * 3 : 0);           // 발 높이(머리 높이), 끝나면 천천히 내림
+            p.fl = [hip, [c * 46, -102 - sn * 6], [c * 98, fy - sn * 10]];
+            p.bl = [hip, [-10 + c * 6, -44], [-6 - c * 10, -20]];      // 축이 되는 다리는 접음
+            p.fa = [sh, [-c * 26, -112], [-c * 48, -104]];             // 팔은 다리 반대쪽으로 벌려 균형
+            p.ba = [shb, [-c * 20 - 6, -106], [-c * 40 - 10, -96]];
+            lean = -14 * s - 4; rot = -0.08 * s; liftAll = true; glow = 0;
+            p.spin = { s, fade: kt <= 8 ? 1 : Math.max(0, 1 - (kt - 8) / 14), hy: -128 };
+            p.footGlow = kt < 18 ? 1 : Math.max(0, 1 - (kt - 18) / 10);
+          } else if (L && L.n >= 9) {
+            // 웅크리기: 무릎을 끌어올려 힘 모으기
+            p.fl = [hip, [34, -84], [22, -48]]; p.bl = [hip, [-14, -40], [-24, 0]];
+            p.fa = [sh, [6, -112], [-14, -124]]; p.ba = [shb, [0, -104], [-20, -112]];
+            lean = -10; dy = 8; p.footGlow = Math.min(1, (L.t - 45) / 10);
+          } else if (L || act) {
             const k = Math.floor(f.t / 3) % 2;
             if (k) p.fa = [sh, [36, -118], [88, -122]]; else p.ba = [shb, [32, -112], [86, -116]];
             lean = 10; glow = 0.35;
           } else lean = -6;
           break;
+        }
       }
     }
   }
@@ -1265,6 +1307,27 @@ function drawFighter(f) {
   seg([[hx + 5, hy - 4], [hx + 13, hy - 2]], '#111', 2);
   seg(pz.fa, skin, 11); dot(pz.fa[2], 10.5, shirt);
   ctx.shadowBlur = 0;
+  if (pz.spin && pz.spin.fade > 0) {
+    // 회축 궤적: 머리 높이의 수평 원(회오리) — 뒤에서 앞으로 휘감은 만큼 금빛으로 그림
+    const sp = pz.spin, cx = pz.fl[0][0], cy = pz.fl[0][1] + sp.hy + 72;
+    ctx.save(); ctx.globalAlpha = sp.fade;
+    const end = Math.PI * (1 + Math.max(0.02, sp.s));                  // π(뒤) → 위(몸 뒤쪽) → 2π(앞)
+    for (const [rx, ry, w, c] of [[104, 30, 22, 'rgba(255,140,0,.35)'], [100, 28, 10, 'rgba(255,210,63,.9)'], [100, 28, 4, '#fff']]) {
+      ctx.strokeStyle = c; ctx.lineWidth = w; ctx.beginPath();
+      ctx.ellipse(cx, cy, rx, ry, 0, Math.PI, end, false);
+      ctx.stroke();
+    }
+    // 바깥쪽 잔상 고리 (회오리 느낌)
+    ctx.globalAlpha = sp.fade * 0.5; ctx.strokeStyle = 'rgba(255,210,63,.8)'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.ellipse(cx, cy + 14, 120, 36, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.restore();
+  }
+  if (pz.footGlow > 0) {
+    const [gx, gy] = pz.fl[2], R = 18 + pz.footGlow * 30;
+    const gr = ctx.createRadialGradient(gx, gy, 2, gx, gy, R);
+    gr.addColorStop(0, 'rgba(255,255,230,.95)'); gr.addColorStop(0.4, 'rgba(255,210,63,.65)'); gr.addColorStop(1, 'rgba(255,140,0,0)');
+    ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(gx, gy, R, 0, Math.PI * 2); ctx.fill();
+  }
   if (pz.glow > 0) {
     const [gx, gy] = pz.fa[2], R = 22 + pz.glow * 36;
     const gr = ctx.createRadialGradient(gx, gy, 2, gx, gy, R);
@@ -1345,9 +1408,18 @@ function powerBar(x, y, w, h, pw, rev, k) {
 }
 function drawHUD() {
   const cssS = cv.clientWidth / VW, k = Math.min(1.6, Math.max(1, 0.8 / cssS));
-  const m = 14 * k, bh = 18 * k, y = 14 * k, tw = 56 * k;
+  const m = 14 * k, bh = 18 * k, y = 30 * k, tw = 56 * k;
   const bw = VW / 2 - m - tw / 2 - 10 * k;
   hpBar(m, y, bw, bh, P.hp, P.dispHp, false);
+  if (G.mode === 'arcade') { // 실시간 점수 (체력바 위)
+    G.dispScore += (G.runScore - G.dispScore) * 0.18; if (Math.abs(G.runScore - G.dispScore) < 1) G.dispScore = G.runScore;
+    ctx.font = `900 ${14 * k}px ${FONT}`; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+    const sx = m, sy = y - 5 * k, label = 'SCORE ', val = Math.round(G.dispScore).toLocaleString();
+    ctx.lineWidth = 4 * k; ctx.strokeStyle = 'rgba(0,0,0,.7)'; ctx.lineJoin = 'round';
+    ctx.strokeText(label + val, sx, sy);
+    ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.fillText(label, sx, sy);
+    ctx.fillStyle = '#ffd23f'; ctx.fillText(val, sx + ctx.measureText(label).width, sy);
+  }
   hpBar(VW - m - bw, y, bw, bh, C.hp, C.dispHp, true);
   ctx.fillStyle = 'rgba(0,0,0,.6)'; rrect(VW / 2 - tw / 2, y - 6 * k, tw, bh + 20 * k, 8 * k); ctx.fill();
   const sec = Math.ceil(G.clock / 60);
@@ -1377,7 +1449,7 @@ function drawHUD() {
     const txt = cu.n + ' HIT';
     ctx.strokeText(txt, 0, 0); ctx.fillStyle = cu.side === 'L' ? '#ffd23f' : '#ff8a8a'; ctx.fillText(txt, 0, 0);
     ctx.font = `800 ${13 * k}px ${FONT}`; ctx.lineWidth = 4;
-    const sub = cu.dmg + ' 데미지';
+    const sub = cu.dmg + ' DMG';
     ctx.strokeText(sub, 0, 26 * k); ctx.fillStyle = '#fff'; ctx.fillText(sub, 0, 26 * k);
     ctx.restore();
   }
