@@ -197,10 +197,11 @@ kbd{display:inline-block;min-width:20px;padding:0 5px;margin:0 1px;border:1px so
 
     <h3>콤보 예시</h3>
     <div class="mv"><b>입문</b><span>앉아약K → 앉아약K → 돌진각</span></div>
-    <div class="mv"><b>기본</b><span>강P → 기공탄 (또는 승천각)</span></div>
+    <div class="mv"><b>기본</b><span>약P → 약P → 강P → 승천각</span></div>
+    <div class="mv"><b>하단</b><span>앉아약K → 앉아약K → 강K</span></div>
     <div class="mv"><b>점프 진입</b><span>점프강K → 강P → 승천각</span></div>
     <div class="mv"><b>한 방</b><span>강P → 초필살 폭풍연타</span></div>
-    <p class="note">💡 약공격은 약공격으로 바로 이어져요(연타). 공격이 <b>맞거나 막히는 순간</b> 필살기를 입력하면 동작이 끊기고 바로 나가요(캔슬). 필살기는 초필살로 캔슬돼요.</p>
+    <p class="note">💡 약공격이 맞으면 약공격·강공격으로 바로 이어져요(연타). 공격이 <b>맞거나 막히는 순간</b> 필살기를 입력하면 동작이 끊기고 바로 나가요(캔슬). 필살기는 초필살로 캔슬돼요.</p>
 
     <button class="big" id="btnMovesClose" style="margin-top:16px">닫기</button>
   </div>
@@ -250,13 +251,13 @@ const FONT = '"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",system-ui,san
     guard: mid(아무렇게나 막힘) low(앉아 막기) high(서서 막기)
     cancel: chain(약공격 연타+필살기) sp(필살기로 캔슬) su(초필로 캔슬)               */
 const MV = {
-  stLP: { cls:'L', post:'st', s:3, a:3, r:7,  dmg:4,  hs:14, bs:10, kb:3, box:[18,84,-138,-104], guard:'mid', cancel:'chain' },
+  stLP: { cls:'L', post:'st', s:3, a:3, r:7,  dmg:4,  hs:20, bs:11, kb:2, box:[18,84,-138,-104], guard:'mid', cancel:'chain' },
   stHP: { cls:'H', post:'st', s:6, a:4, r:16, dmg:10, hs:23, bs:15, kb:5, box:[18,102,-142,-100], guard:'mid', cancel:'sp' },
-  stLK: { cls:'L', post:'st', s:4, a:3, r:8,  dmg:5,  hs:14, bs:10, kb:3, box:[18,94,-66,-22], guard:'mid', cancel:'chain' },
+  stLK: { cls:'L', post:'st', s:4, a:3, r:8,  dmg:5,  hs:20, bs:11, kb:2, box:[18,94,-66,-22], guard:'mid', cancel:'chain' },
   stHK: { cls:'H', post:'st', s:8, a:4, r:18, dmg:11, hs:23, bs:15, kb:6, box:[18,118,-160,-96], guard:'mid', cancel:'sp' },
-  crLP: { cls:'L', post:'cr', s:3, a:3, r:7,  dmg:4,  hs:13, bs:10, kb:3, box:[18,82,-100,-66], guard:'mid', cancel:'chain' },
+  crLP: { cls:'L', post:'cr', s:3, a:3, r:7,  dmg:4,  hs:19, bs:11, kb:2, box:[18,82,-100,-66], guard:'mid', cancel:'chain' },
   crHP: { cls:'H', post:'cr', s:5, a:5, r:16, dmg:9,  hs:22, bs:14, kb:4, box:[4,66,-205,-70], guard:'mid', cancel:'sp' },
-  crLK: { cls:'L', post:'cr', s:4, a:3, r:8,  dmg:4,  hs:13, bs:10, kb:3, box:[18,98,-24,0], guard:'low', cancel:'chain' },
+  crLK: { cls:'L', post:'cr', s:4, a:3, r:8,  dmg:4,  hs:19, bs:11, kb:2, box:[18,98,-24,0], guard:'low', cancel:'chain' },
   crHK: { cls:'H', post:'cr', s:7, a:4, r:22, dmg:10, hs:20, bs:14, kb:4, box:[18,124,-22,0], guard:'low', kd:true },
   jLP:  { cls:'J', post:'j',  s:3, a:8, r:4,  dmg:5,  hs:17, bs:10, kb:3, box:[6,72,-114,-50], guard:'high' },
   jHP:  { cls:'J', post:'j',  s:5, a:6, r:6,  dmg:10, hs:20, bs:13, kb:4, box:[6,90,-104,-28], guard:'high' },
@@ -546,8 +547,8 @@ class Fighter {
     if (!this.onGround) return false;
     if (cancel) {
       const cm = this.move;
-      if (!cm || !this.contact || !cm.cancel || this.atkT > cm.s + cm.a + 7) return false;
-      if (cm.cancel === 'chain') return m.cls === 'L' || m.cls === 'S' || m.cls === 'U';
+      if (!cm || !this.contact || !cm.cancel || this.atkT > cm.s + cm.a + 10) return false;
+      if (cm.cancel === 'chain') return m.cls === 'L' || m.cls === 'H' || m.cls === 'S' || m.cls === 'U';
       if (cm.cancel === 'sp') return m.cls === 'S' || m.cls === 'U';
       if (cm.cancel === 'su') return m.cls === 'U';
       return false;
